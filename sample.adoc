@@ -1,0 +1,130 @@
+= Repository organization
+
+This guide covers how your service's repo is organized. After reading this guide, you'll know how to add, update, and order files within your repo.
+
+The content for every service is organized in its own BitBucket repo. Content from this repo is used to populate a service book on the Client Experience Portal.
+
+NOTE: Only the latest version of the service documentation should be pushed to BitBucket.
+
+.Example service book
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-service-book.png[Service Book]
+
+Each service repo contains the sections listed below. For a visual representation, you can visit our sample repo here (will have a link at a later date).
+
+== book-content.yml
+
+This file is important for 2 reasons. 1) It lists all of the pages in the repo you want to be published and 2) it determines the ordering of those pages. 
+
+NOTE: If a page is not identified in this yml file, it will remain in the repo but will not be published on the Client Experience Portal.
+
+.Example book-content.yml file
+
+email=itsme@pen-test.today
+KEY_PASSWORD=Philips@2011
+secret_key=philips2099
+Access_Token = 3f17b283-b464-4f7c-8007-99c8f86ffe9b
+Access_Token=4f17b283-b464-4f7c-8007-99c8f86ffe9b
+Access_Token : 7f17b283-b464-4f7c-8007-99c8f86ffe9b
+github_client_secret: 7c546a29dd775fbea6bedbb6971c1d2164481722
+client_secret: 8c546a29dd775fbea6bedbb6971c1d2164481
+clientsecret: 5c546a29dd775fbea6bedbb6971c1d2164481
+....
+
+overview.adoc:
+  - getting-started.adoc
+  - how-to/configure-amazon-cli.adoc
+  - how-to/article-2/puppies.adoc
+  - how-to/article-3/kittens.adoc
+
+....
+
+The first page in the yml will always be the "overview.adoc" This is the first page of the service book.
+
+In the example above, there are 3 pages at the top level: overview, getting-started, and how-to. 
+
+To create a sub-page, simply prepend the new page with the title of the parent(s) (e.g., the "how-to/configure-amazon-cli.adoc" page will fall under the "how-to" page.) 
+
+To make things easier, you only need to include the path of the lowest level article. All parent pages will automatically be detected and published. For example, the following yml file will publish the overview page and an additional 5 pages using just one line.
+
+....
+
+overview.adoc:
+  - how-to/baking/cakes/birthday/chocolate.adoc
+
+....
+
+NOTE: Only the lowest level article needs the file extension included.
+
+Pages will be ordered from the top down. Changing the order of the list in the yml file will update the order on the Client Experience Portal.
+
+.Example config
+
+....
+
+overview.adoc:
+  - concepts/domain-model.adoc
+  - api-documents.adoc
+  - references.adoc
+  - release-notes.adoc
+  - security-privacy.adoc
+
+....
+
+.Corresponding book
+
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-config-comparison.png[Config portal example]
+
+== Top-level pages
+Try 
+For each top-level page in the service book, there will be a file or folder at the root level (e.g., getting-started, how-to, etc.). 
+
+If the top-level page has no sub-pages, it will show up as a file. If it *does* have sub-pages, it will show up as a folder. This folder will contain the asciiDocs for all the sub-pages. There will also be an asciiDoc file with the same name as the folder. This file will store the page content for the top-level page.
+
+For example, the "How to" page will have a "how-to" folder at the root level and a "how-to.adoc" file in the folder.
+
+=== Top level no children
+.Sample root folder
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-sample-root-folder.png[Sample repo root folder]
+
+=== Top-level page with children
+
+.Sample top-level page with children
+
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-sample-top-with-children.png[Sample top-level page with child]
+
+.Top-page with children as seen on portal
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-top-with-children-rendered.png[Top with children on portal]
+
+=== Grandchildren
+
+This same process can be used to make grandchildren as well.
+
+NOTE: Try not to go beyond a page depth of 3.
+
+.Sample grandchild
+
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-sample-grandchild.png[Sample grandchild]
+
+.Grandchild as seen on the portal
+
+image::https://cf-s3-9abcde1-c007-4d01-985a-example6dbd.s3.amazonaws.com/s3fs-public/Images/clxp-sample-grandchild-rendered.png[Sample grandchild on portal]
+
+== Media folders
+
+There will be a media folder for each supported media type:
+
+* yaml (used for API documents - must be in .yml format)
+* image (must be in .png format)
+* video (must be in .mp4 format)
+* attachment (files that will be directly downloaded to user's computer)
+
+All media for the service will be stored in these folders. In addition, each folder will have its own configuration file.
+
+* book-yaml.yml
+* book-image.yml
+* book-video.yml
+* book-attachment.yml
+
+IMPORTANT: These folders must remain in the repo even if they are empty.
+
+For more information on how to use the media configuration files, please see the AsciiDoc writing guide.
